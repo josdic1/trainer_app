@@ -1,6 +1,8 @@
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy_serializer import SerializerMixin
 from sqlalchemy.orm import validates
+# Add 'association_proxy' to this import line
+from sqlalchemy.ext.associationproxy import association_proxy
 
 # Connect to the database instance from app.py
 from .app import db
@@ -8,6 +10,8 @@ from .app import db
 # Client 
 class Client(db.Model, SerializerMixin):
     __tablename__ = 'clients'
+
+    appointment_reasons = association_proxy('appointments', 'reason')
 
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String, nullable=False)
@@ -22,6 +26,8 @@ class Client(db.Model, SerializerMixin):
 # Appointment    
 class Appointment(db.Model, SerializerMixin):
     __tablename__ = 'appointments'
+
+    client_name = association_proxy("client", "name")
 
     id = db.Column(db.Integer, primary_key=True)
     date = db.Column(db.DateTime, nullable=False)
