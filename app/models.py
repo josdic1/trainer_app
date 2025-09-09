@@ -11,6 +11,8 @@ from .app import db
 class Client(db.Model, SerializerMixin):
     __tablename__ = 'clients'
 
+    serialize_rules = ('-appointments.client',)
+
     appointment_reasons = association_proxy('appointments', 'reason')
 
     id = db.Column(db.Integer, primary_key=True)
@@ -26,6 +28,11 @@ class Client(db.Model, SerializerMixin):
 # Appointment    
 class Appointment(db.Model, SerializerMixin):
     __tablename__ = 'appointments'
+
+    # Serialization
+    # This rule does the reverse to prevent the same infinite loop.
+    # It says: "When you serialize my client, don't serialize its 'appointments' attribute."
+    serialize_rules = ('-client.appointments',)
 
     client_name = association_proxy("client", "name")
 
