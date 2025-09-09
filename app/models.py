@@ -23,8 +23,8 @@ class Client(db.Model, SerializerMixin):
 class Appointment(db.Model, SerializerMixin):
     __tablename__ = 'appointments'
 
-    id = db.Column(db.Integer, primary_key=True),
-    date = db.Column(db.DateTime, nullable=False),
+    id = db.Column(db.Integer, primary_key=True)
+    date = db.Column(db.DateTime, nullable=False)
     reason = db.Column(db.String)
 
     # Foreign Key to CLIENT table
